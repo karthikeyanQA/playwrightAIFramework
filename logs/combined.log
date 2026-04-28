@@ -1,0 +1,115 @@
+[2026-04-28 19:29:25] INFO: Initializing API client for JSONPlaceholder
+[2026-04-28 19:29:25] INFO: Initializing API client for JSONPlaceholder
+[2026-04-28 19:29:25] INFO: STEP: Fetching comments for post ID: 1
+[2026-04-28 19:29:25] INFO: STEP: Testing API retry mechanism
+[2026-04-28 19:29:25] HTTP: API REQUEST: GET /posts/1/comments
+[2026-04-28 19:29:25] INFO: STEP: Fetching all posts
+[2026-04-28 19:29:25] HTTP: API REQUEST: GET /posts
+[2026-04-28 19:29:25] INFO: STEP: Partially updating post with ID: 1
+[2026-04-28 19:29:25] HTTP: API REQUEST: PATCH /posts/1
+[2026-04-28 19:29:25] DEBUG: [API GET /posts/1] Attempt 1/3
+[2026-04-28 19:29:25] HTTP: API REQUEST: GET /posts/1
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 200 /posts/1/comments
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 200 /posts/1
+[2026-04-28 19:29:26] INFO: STEP: Retry mechanism working correctly
+[2026-04-28 19:29:26] INFO: STEP: Retrieved 5 comments for post 1
+[2026-04-28 19:29:26] INFO: STEP: Testing custom headers
+[2026-04-28 19:29:26] INFO: STEP: Fetching all comments
+[2026-04-28 19:29:26] HTTP: API REQUEST: GET /posts/1
+[2026-04-28 19:29:26] HTTP: API REQUEST: GET /comments
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 200 /posts
+[2026-04-28 19:29:26] INFO: STEP: Retrieved 100 posts in 404ms
+[2026-04-28 19:29:26] INFO: STEP: Fetching post with ID: 1
+[2026-04-28 19:29:26] HTTP: API REQUEST: GET /posts/1
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 200 /posts/1
+[2026-04-28 19:29:26] INFO: STEP: Custom headers handled successfully
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 200 /comments
+[2026-04-28 19:29:26] INFO: STEP: Retrieved 500 total comments
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 200 /posts/1
+[2026-04-28 19:29:26] INFO: STEP: Retrieved post: {
+  "userId": 1,
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+}
+[2026-04-28 19:29:26] INFO: STEP: Fetching all users
+[2026-04-28 19:29:26] HTTP: API REQUEST: GET /users
+[2026-04-28 19:29:26] INFO: STEP: Creating new post
+[2026-04-28 19:29:26] HTTP: API REQUEST: POST /posts
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 200 /users
+[2026-04-28 19:29:26] INFO: STEP: Retrieved 10 users
+[2026-04-28 19:29:26] INFO: STEP: Fetching user with ID: 1
+[2026-04-28 19:29:26] HTTP: API REQUEST: GET /users/1
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 200 /posts/1
+[2026-04-28 19:29:26] INFO: STEP: Post partially updated successfully
+[2026-04-28 19:29:26] INFO: STEP: Deleting post with ID: 1
+[2026-04-28 19:29:26] HTTP: API REQUEST: DELETE /posts/1
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 200 /users/1
+[2026-04-28 19:29:26] INFO: STEP: User details: Leanne Graham (Sincere@april.biz)
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 201 /posts
+[2026-04-28 19:29:26] INFO: STEP: Created post with ID: 101
+[2026-04-28 19:29:26] INFO: STEP: Updating post with ID: 1
+[2026-04-28 19:29:26] HTTP: API REQUEST: PUT /posts/1
+[2026-04-28 19:29:26] HTTP: API RESPONSE: 200 /posts/1
+[2026-04-28 19:29:26] INFO: STEP: Deleted post with ID: 1
+[2026-04-28 19:29:26] INFO: STEP: Attempting to fetch non-existent post with ID: 999999
+[2026-04-28 19:29:26] HTTP: API REQUEST: GET /posts/999999
+[2026-04-28 19:29:27] ERROR: API Response Error: 404
+[2026-04-28 19:29:27] INFO: STEP: Correctly handled non-existent resource
+[2026-04-28 19:29:27] INFO: STEP: Testing API response time
+[2026-04-28 19:29:27] HTTP: API REQUEST: GET /posts/1
+[2026-04-28 19:29:27] HTTP: API RESPONSE: 200 /posts/1
+[2026-04-28 19:29:27] INFO: STEP: API response time: 66ms - Performance good ✓
+[2026-04-28 19:29:27] HTTP: API RESPONSE: 200 /posts/1
+[2026-04-28 19:29:27] INFO: STEP: Post updated successfully
+[2026-04-28 19:30:20] INFO: ========== TEST START: TodoMVC Test ==========
+[2026-04-28 19:30:21] INFO: ========== TEST START: TodoMVC Test ==========
+[2026-04-28 19:30:21] INFO: ========== TEST START: TodoMVC Test ==========
+[2026-04-28 19:30:22] INFO: STEP: Deleting todo item
+[2026-04-28 19:30:22] INFO: STEP: Filtering active todos
+[2026-04-28 19:30:22] INFO: STEP: Verifying only active todos are shown
+[2026-04-28 19:30:22] INFO: STEP: Active filter working correctly
+[2026-04-28 19:30:22] INFO: ========== TEST END: @ui Should filter active todos - PASSED ==========
+[2026-04-28 19:30:23] INFO: ========== TEST START: TodoMVC Test ==========
+[2026-04-28 19:30:23] INFO: ========== TEST START: TodoMVC Test ==========
+[2026-04-28 19:30:23] INFO: STEP: Marking todo as completed
+[2026-04-28 19:30:23] INFO: STEP: Verifying todo is marked as completed
+[2026-04-28 19:30:23] INFO: STEP: Todo marked as completed successfully
+[2026-04-28 19:30:23] INFO: ========== TEST END: @ui Should mark todo as completed - PASSED ==========
+[2026-04-28 19:30:23] INFO: ========== TEST START: Form Test ==========
+[2026-04-28 19:30:23] INFO: STEP: Adding new todo item
+[2026-04-28 19:30:23] INFO: STEP: Verifying todo was added
+[2026-04-28 19:30:23] INFO: STEP: Todo item added successfully
+[2026-04-28 19:30:23] INFO: ========== TEST END: @smoke @ui Should add a new todo item - PASSED ==========
+[2026-04-28 19:30:23] INFO: STEP: Verifying page loaded
+[2026-04-28 19:30:23] INFO: STEP: Page loaded successfully
+[2026-04-28 19:30:23] INFO: ========== TEST START: Form Test ==========
+[2026-04-28 19:30:23] INFO: STEP: Clearing completed todos
+[2026-04-28 19:30:23] INFO: STEP: Verifying all completed todos were cleared
+[2026-04-28 19:30:23] INFO: STEP: Completed todos cleared successfully
+[2026-04-28 19:30:23] INFO: ========== TEST END: @ui Should clear completed todos - PASSED ==========
+[2026-04-28 19:30:24] INFO: STEP: Verifying page structure
+[2026-04-28 19:30:25] INFO: ========== TEST START: Form Test ==========
+[2026-04-28 19:30:25] INFO: STEP: Verifying page structure
+[2026-04-28 19:30:26] INFO: ========== TEST START: Form Test ==========
+[2026-04-28 19:30:26] INFO: STEP: Verifying page structure
+[2026-04-28 19:30:52] ERROR: ========== TEST END: @ui Should delete a todo item - FAILED ==========
+[2026-04-28 19:30:53] INFO: ========== TEST START: TodoMVC Test ==========
+[2026-04-28 19:30:54] INFO: STEP: Deleting todo item
+[2026-04-28 19:31:24] ERROR: ========== TEST END: @ui Should delete a todo item - FAILED ==========
+[2026-04-28 19:31:25] INFO: ========== TEST START: TodoMVC Test ==========
+[2026-04-28 19:31:26] INFO: STEP: Deleting todo item
+[2026-04-28 19:31:56] ERROR: ========== TEST END: @ui Should delete a todo item - FAILED ==========
+[2026-04-28 20:26:46] INFO: Initializing API client for JSONPlaceholder
+[2026-04-28 20:26:46] INFO: STEP: Fetching all users
+[2026-04-28 20:26:46] INFO: STEP: Fetching comments for post ID: 1
+[2026-04-28 20:26:46] HTTP: API REQUEST: GET /users
+[2026-04-28 20:26:46] HTTP: API REQUEST: GET /posts/1/comments
+[2026-04-28 20:26:46] INFO: STEP: Fetching all posts
+[2026-04-28 20:26:46] HTTP: API REQUEST: GET /posts
+[2026-04-28 20:26:47] HTTP: API RESPONSE: 200 /posts/1/comments
+[2026-04-28 20:26:47] HTTP: API RESPONSE: 200 /users
+[2026-04-28 20:26:47] INFO: STEP: Retrieved 5 comments for post 1
+[2026-04-28 20:26:47] INFO: STEP: Retrieved 10 users
+[2026-04-28 20:26:47] HTTP: API RESPONSE: 200 /posts
+[2026-04-28 20:26:47] INFO: STEP: Retrieved 100 posts in 502ms

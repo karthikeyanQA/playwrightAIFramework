@@ -1,0 +1,77 @@
+{
+  "name": "playwright-enterprise-framework",
+  "version": "1.0.0",
+  "description": "Enterprise-grade test automation framework using Playwright, TypeScript, and Page Object Model",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --grep @ui",
+    "test:api": "playwright test --grep @api",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:parallel": "playwright test --workers=4",
+    "test:serial": "playwright test --workers=1",
+    "report": "playwright show-report",
+    "report:allure": "allure generate ./allure-results --clean && allure open",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "type-check": "tsc --noEmit",
+    "prepare": "husky install",
+    "pretest": "npm run lint && npm run type-check",
+    "test:ci": "playwright test --reporter=html,json,junit",
+    "clean": "rm -rf node_modules package-lock.json playwright-report test-results allure-results"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "page-object-model",
+    "test-automation",
+    "e2e-testing",
+    "api-testing",
+    "enterprise-framework"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.11.24",
+    "@types/pg": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "allure-commandline": "^2.27.0",
+    "allure-playwright": "^2.15.1",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-playwright": "^1.5.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "axios": "^1.6.7",
+    "csv-parse": "^5.5.5",
+    "js-yaml": "^4.1.0",
+    "mysql2": "^3.9.2",
+    "pg": "^8.11.3",
+    "winston": "^3.11.0"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

@@ -1,0 +1,4 @@
+[2026-04-28 20:26:46] info: STEP: Fetching comments for post ID: 1
+[2026-04-28 20:26:46] http: API REQUEST: GET /posts/1/comments
+[2026-04-28 20:26:47] http: API RESPONSE: 200 /posts/1/comments
+[2026-04-28 20:26:47] info: STEP: Retrieved 5 comments for post 1

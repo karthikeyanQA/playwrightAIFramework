@@ -1,0 +1,59 @@
+{
+  "$schema": "https://github.com/modelcontextprotocol/specification/blob/main/schema/mcp.json",
+  "mcpServers": {
+    "playwright-framework": {
+      "command": "node",
+      "args": [
+        "./mcp-server.js"
+      ],
+      "env": {
+        "FRAMEWORK_ROOT": "."
+      },
+      "description": "MCP server for Playwright test automation framework"
+    }
+  },
+  "metadata": {
+    "name": "Playwright Framework MCP Configuration",
+    "version": "1.0.0",
+    "description": "Model Context Protocol configuration for the enterprise Playwright testing framework",
+    "capabilities": {
+      "resources": [
+        "test-files",
+        "test-results",
+        "logs",
+        "documentation",
+        "configuration"
+      ],
+      "tools": [
+        "run_tests",
+        "analyze_test_results",
+        "analyze_failures",
+        "get_test_logs",
+        "list_tests",
+        "get_test_coverage"
+      ]
+    }
+  },
+  "installation": {
+    "steps": [
+      "1. Ensure Node.js 18+ is installed",
+      "2. Run: npm install @modelcontextprotocol/sdk",
+      "3. Copy this configuration to Claude Desktop config:",
+      "   - macOS: ~/Library/Application Support/Claude/claude_desktop_config.json",
+      "   - Windows: %APPDATA%\\Claude\\claude_desktop_config.json",
+      "   - Linux: ~/.config/Claude/claude_desktop_config.json",
+      "4. Restart Claude Desktop",
+      "5. Use MCP tools via Claude Code or Claude Desktop"
+    ]
+  },
+  "usage": {
+    "examples": [
+      "Run all tests: Ask Claude to 'run all tests using MCP'",
+      "Run smoke tests: Ask Claude to 'run smoke tests'",
+      "Analyze failures: Ask Claude to 'analyze test failures'",
+      "Get test logs: Ask Claude to 'show me test logs'",
+      "List tests: Ask Claude to 'list all available tests'",
+      "Get coverage: Ask Claude to 'show test coverage'"
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+[2026-04-28 20:26:46] info: STEP: Fetching all users
+[2026-04-28 20:26:46] http: API REQUEST: GET /users
+[2026-04-28 20:26:47] http: API RESPONSE: 200 /users
+[2026-04-28 20:26:47] info: STEP: Retrieved 10 users

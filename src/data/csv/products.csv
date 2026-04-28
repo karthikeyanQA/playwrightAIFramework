@@ -1,0 +1,6 @@
+id,name,price,category,stock
+1,Product A,29.99,Electronics,100
+2,Product B,49.99,Electronics,50
+3,Product C,19.99,Books,200
+4,Product D,39.99,Clothing,75
+5,Product E,59.99,Electronics,30

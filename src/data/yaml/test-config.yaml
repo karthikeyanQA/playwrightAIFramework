@@ -1,0 +1,28 @@
+test_suites:
+  smoke:
+    - login
+    - dashboard
+    - logout
+  regression:
+    - login
+    - dashboard
+    - user_management
+    - settings
+    - logout
+
+test_data:
+  timeout:
+    short: 5000
+    medium: 10000
+    long: 30000
+  retry:
+    max_attempts: 3
+    delay_ms: 1000
+
+environments:
+  dev:
+    app_url: https://dev.example.com
+    api_url: https://api.dev.example.com
+  qa:
+    app_url: https://qa.example.com
+    api_url: https://api.qa.example.com
