@@ -79,9 +79,17 @@ export class ConfigManager {
   private determineEnvironment(): Environment {
     const env = process.env.ENV || process.env.NODE_ENV || 'dev';
 
-    if (env === 'development' || env === 'dev') return 'dev';
-    if (env === 'qa' || env === 'staging') return 'qa';
-    if (env === 'production' || env === 'prod') return 'prod';
+    if (env === 'development' || env === 'dev') {
+      return 'dev';
+    }
+
+    if (env === 'qa' || env === 'staging') {
+      return 'qa';
+    }
+
+    if (env === 'production' || env === 'prod') {
+      return 'prod';
+    }
 
     logger.warn(`Unknown environment: ${env}, defaulting to 'dev'`);
     return 'dev';

@@ -43,9 +43,9 @@ export const test = base.extend<TestFixtures>({
     const dbClient = DatabaseClientFactory.createFromEnv();
     await dbClient.connect();
     logger.info('Database connected for test');
-    
+
     await use(dbClient);
-    
+
     await dbClient.disconnect();
     logger.info('Database disconnected after test');
   },
@@ -54,14 +54,14 @@ export const test = base.extend<TestFixtures>({
   authenticatedPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     await loginPage.navigate();
-    
+
     // Login with default credentials
     const username = process.env.TEST_USERNAME || 'testuser@example.com';
     const password = process.env.TEST_PASSWORD || 'Test@1234';
-    
+
     await loginPage.login(username, password);
     logger.info('User authenticated via fixture');
-    
+
     await use(page);
   },
 });
