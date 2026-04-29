@@ -9,11 +9,13 @@ import logger from '../utils/logger/logger';
 export abstract class BasePage {
   protected page: Page;
   protected uiActions: UIActions;
+  protected genericPageActions: UIActions;
   protected abstract pageUrl: string;
 
   constructor(page: Page) {
     this.page = page;
     this.uiActions = new UIActions(page);
+    this.genericPageActions = this.uiActions;
   }
 
   /**
@@ -30,7 +32,7 @@ export abstract class BasePage {
    */
   async waitForPageLoad(): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('load');
   }
 
   /**

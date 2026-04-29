@@ -30,7 +30,7 @@ export class DashboardPage extends BasePage {
    * Get welcome message
    */
   async getWelcomeMessage(): Promise<string> {
-    return await this.uiActions.getText(this.welcomeMessage);
+    return await this.genericPageActions.getText(this.welcomeMessage, 'welcome message');
   }
 
   /**
@@ -38,7 +38,7 @@ export class DashboardPage extends BasePage {
    */
   async logout(): Promise<void> {
     logger.step('Logging out');
-    await this.uiActions.click(this.logoutButton);
+    await this.genericPageActions.click(this.logoutButton, 'logout button');
   }
 
   /**
@@ -46,7 +46,10 @@ export class DashboardPage extends BasePage {
    */
   async navigateToMenuItem(menuItem: string): Promise<void> {
     logger.step(`Navigating to menu item: ${menuItem}`);
-    await this.uiActions.click(this.navigationMenu.locator(`a:has-text("${menuItem}")`));
+    await this.genericPageActions.click(
+      this.navigationMenu.locator(`a:has-text("${menuItem}")`),
+      `${menuItem} menu item`
+    );
   }
 
   /**
@@ -62,6 +65,6 @@ export class DashboardPage extends BasePage {
    * Is user logged in
    */
   async isUserLoggedIn(): Promise<boolean> {
-    return await this.uiActions.isVisible(this.userProfile);
+    return await this.genericPageActions.isVisible(this.userProfile);
   }
 }

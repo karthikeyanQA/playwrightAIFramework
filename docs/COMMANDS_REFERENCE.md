@@ -43,7 +43,7 @@ npm test -- --project=chromium --headed
 | Command | Description |
 |---------|-------------|
 | `npm run report` | Open Playwright HTML report |
-| `npm run report:allure` | Generate and open Allure report |
+| `npm run report:allure` | Generate and open Allure report (starts local server until Ctrl+C) |
 
 ## 🔍 Code Quality Commands
 
@@ -69,10 +69,42 @@ npm test -- --project=chromium --headed
 
 ### Pre-flight Check
 
+| Command | Description |
+|---------|-------------|
+| `npm run validate` | Run lint + type-check + format:check in one command |
+
 ```bash
-# Run all quality checks before committing
-npm run lint && npm run type-check && npm run format:check
+# Recommended: run all quality checks before committing
+npm run validate
 ```
+
+### Git Hooks (Husky)
+
+Quality gates are enforced automatically on every commit and push:
+
+#### `pre-commit` — runs on `git commit`
+```
+1. lint-staged  →  ESLint + Prettier on staged .ts files only
+2. tsc --noEmit →  Full TypeScript type check
+```
+- Commit is **blocked** if either step fails.
+- Fix errors reported, then re-run `git commit`.
+
+#### `pre-push` — runs on `git push`
+```
+1. npm run lint        →  Full ESLint check (no auto-fix)
+2. npm run type-check  →  TypeScript compiler check
+3. npm run test:smoke  →  Smoke test suite
+```
+- Push is **blocked** if any step fails.
+- Use `npm run lint:fix` to auto-fix lint issues, then re-push.
+
+#### `commit-msg` — runs on `git commit`
+```
+Validates conventional commit format: type(scope): description
+Allowed types: feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert
+```
+- Commit is **blocked** for non-conforming messages.
 
 ## 🔧 Setup Commands
 

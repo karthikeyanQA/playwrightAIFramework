@@ -31,7 +31,7 @@ A scalable, production-ready test automation framework built with **Playwright**
 - 🤖 **AI-Agent Friendly** - Designed for GitHub Copilot and MCP workflows
 - 🔌 **MCP Integration** - Claude Code can run tests, analyze results, and generate new tests
 - 📝 **Code Quality** - ESLint + Prettier + Husky for consistent code style
-- 🔍 **Logging** - Comprehensive logging with Winston
+- 📊 **Allure-First Test Narration** - UI/API test steps are written directly into Allure
 - 🌍 **Environment-Based Config** - Separate configs for dev, qa, prod
 - 📊 **Test Data Management** - Support for JSON, CSV, YAML data files
 
@@ -46,11 +46,11 @@ A scalable, production-ready test automation framework built with **Playwright**
 - [Database Testing](#database-testing)
 - [API Testing](#api-testing)
 - [MCP Integration](#mcp-integration)
-- [Allure Reporting](#allure-reporting)
 - [CI/CD Integration](#cicd-integration)
 - [Best Practices](#best-practices)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
+- [Documentation](#-documentation)
 
 ## 📦 Prerequisites
 
@@ -70,25 +70,15 @@ git clone https://github.com/yourusername/playwright-enterprise-framework.git
 cd playwright-enterprise-framework
 ```
 
-### 2. Install dependencies
+### 2. Install all dependencies & browsers
 
 ```bash
-npm install
+npm run setup
 ```
 
-### 3. Install Playwright browsers
+> This single command runs `npm install`, installs Playwright browsers, and sets up Husky git hooks.
 
-```bash
-npx playwright install
-```
-
-### 4. Setup Husky hooks
-
-```bash
-npm run prepare
-```
-
-### 5. Configure environment
+### 3. Configure environment
 
 Copy the appropriate environment file:
 
@@ -132,8 +122,10 @@ playwright-enterprise-framework/
 │   ├── tests/
 │   │   ├── ui/                        # UI tests
 │   │   │   └── login.spec.ts
-│   │   └── api/                       # API tests
+│   │   ├── api/                       # API tests
 │   │       └── users-api.spec.ts
+│   │   └── helpers/
+│   │       └── allure-reporter.ts     # Allure-first step reporter adapter
 │   └── utils/
 │       ├── api/
 │       │   └── api-client.ts          # API client utility
@@ -150,6 +142,20 @@ playwright-enterprise-framework/
 │       │   └── wait-helper.ts         # Wait utilities
 │       └── logger/
 │           └── logger.ts              # Winston logger
+├── docs/                              # Documentation
+│   ├── ARCHITECTURE.md                # Architecture overview
+│   ├── COMMANDS_REFERENCE.md          # All available commands
+│   ├── CONTRIBUTING.md                # Contribution guidelines
+│   ├── QUICK_START.md                 # Quick start guide
+│   ├── ALLURE_INTEGRATION.md          # Allure setup & usage
+│   ├── ALLURE_AND_AGENTIC_SUMMARY.md  # Allure + AI agent summary
+│   ├── AGENTIC_CAPABILITIES.md        # AI agent capabilities
+│   ├── MCP_INTEGRATION.md             # MCP integration guide
+│   ├── MCP_SETUP_GUIDE.md             # MCP setup instructions
+│   ├── MCP_CONFIGURATION_SUMMARY.md   # MCP config summary
+│   ├── FRAMEWORK_SUMMARY.md           # Framework overview
+│   ├── TEST_RUN_SUMMARY.md            # Test run results summary
+│   └── VALIDATION_REPORT.md           # Validation report
 ├── logs/                              # Log files
 ├── reports/                           # Test reports
 │   └── screenshots/                   # Test screenshots
@@ -256,6 +262,12 @@ npm run test:serial
 
 ```bash
 npm run report
+```
+
+### Generate and open Allure report
+
+```bash
+npm run report:allure
 ```
 
 ## ✍️ Writing Tests
@@ -400,7 +412,53 @@ const response = await apiClient.get('/users', {
 });
 ```
 
-## 🔄 CI/CD Integration
+## � MCP Integration
+
+This framework ships with the **official Playwright MCP server** configured out of the box via `.vscode/mcp.json`. GitHub Copilot (and other MCP-compatible agents) can use it to browse pages, run tests, take screenshots, and interact with the browser directly from the chat.
+
+### How It Works
+
+The `.vscode/mcp.json` file registers `@playwright/mcp` as an MCP server for VS Code:
+
+```json
+{
+  "servers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
+```
+
+No additional installation is required — `npx` downloads and runs the latest version automatically when the server starts.
+
+### What the Playwright MCP Server Provides
+
+| Capability | Description |
+|------------|-------------|
+| **Browser navigation** | Navigate to URLs, go back/forward |
+| **Element interaction** | Click, fill, select, hover, drag |
+| **Screenshots** | Capture full-page or element screenshots |
+| **Network inspection** | Monitor requests and responses |
+| **Console messages** | Read browser console output |
+| **Accessibility snapshots** | Inspect the accessibility tree |
+| **Tab management** | Open, switch, and close tabs |
+
+### Usage
+
+Once the MCP server is enabled in VS Code, you can ask GitHub Copilot things like:
+
+```
+"Navigate to http://localhost:3000 and take a screenshot"
+"Click the login button and fill in the credentials"
+"Run the smoke tests and show me any failures"
+"Take a screenshot of the dashboard page"
+```
+
+For more details see [docs/MCP_INTEGRATION.md](docs/MCP_INTEGRATION.md) and [docs/MCP_SETUP_GUIDE.md](docs/MCP_SETUP_GUIDE.md).
+
+## �🔄 CI/CD Integration
 
 ### GitHub Actions
 
@@ -511,12 +569,12 @@ echo $DB_HOST $DB_PORT $DB_NAME
 Clear cache and reinstall:
 ```bash
 npm run clean
-rm -rf node_modules package-lock.json
-npm install
-npx playwright install
+npm run setup
 ```
 
 ## 🤝 Contributing
+
+Please read [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed contribution guidelines.
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -532,6 +590,26 @@ type(scope): description
 
 Types: feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert
 ```
+
+## 📚 Documentation
+
+All detailed documentation is available in the [`docs/`](docs/) folder:
+
+| Document | Description |
+|----------|-------------|
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Framework architecture and design decisions |
+| [QUICK_START.md](docs/QUICK_START.md) | Get up and running quickly |
+| [COMMANDS_REFERENCE.md](docs/COMMANDS_REFERENCE.md) | Full reference of all npm scripts and commands |
+| [CONTRIBUTING.md](docs/CONTRIBUTING.md) | How to contribute to this project |
+| [ALLURE_INTEGRATION.md](docs/ALLURE_INTEGRATION.md) | Allure reporting setup and usage |
+| [ALLURE_AND_AGENTIC_SUMMARY.md](docs/ALLURE_AND_AGENTIC_SUMMARY.md) | Allure + AI agent integration summary |
+| [AGENTIC_CAPABILITIES.md](docs/AGENTIC_CAPABILITIES.md) | AI agent capabilities and usage |
+| [MCP_INTEGRATION.md](docs/MCP_INTEGRATION.md) | MCP integration guide |
+| [MCP_SETUP_GUIDE.md](docs/MCP_SETUP_GUIDE.md) | MCP setup instructions |
+| [MCP_CONFIGURATION_SUMMARY.md](docs/MCP_CONFIGURATION_SUMMARY.md) | MCP configuration summary |
+| [FRAMEWORK_SUMMARY.md](docs/FRAMEWORK_SUMMARY.md) | High-level framework overview |
+| [TEST_RUN_SUMMARY.md](docs/TEST_RUN_SUMMARY.md) | Latest test run results |
+| [VALIDATION_REPORT.md](docs/VALIDATION_REPORT.md) | Framework validation report |
 
 ## 📝 License
 

@@ -36,9 +36,9 @@ export class LoginPage extends BasePage {
    */
   async login(username: string, password: string): Promise<void> {
     logger.step(`Logging in with username: ${username}`);
-    await this.uiActions.fill(this.usernameInput, username);
-    await this.uiActions.fill(this.passwordInput, password);
-    await this.uiActions.click(this.loginButton);
+    await this.genericPageActions.fill(this.usernameInput, username, 'username input');
+    await this.genericPageActions.fill(this.passwordInput, password, 'password input');
+    await this.genericPageActions.click(this.loginButton, 'login button');
     logger.step('Login button clicked');
   }
 
@@ -46,56 +46,56 @@ export class LoginPage extends BasePage {
    * Enter username
    */
   async enterUsername(username: string): Promise<void> {
-    await this.uiActions.fill(this.usernameInput, username);
+    await this.genericPageActions.fill(this.usernameInput, username, 'username input');
   }
 
   /**
    * Enter password
    */
   async enterPassword(password: string): Promise<void> {
-    await this.uiActions.fill(this.passwordInput, password);
+    await this.genericPageActions.fill(this.passwordInput, password, 'password input');
   }
 
   /**
    * Click login button
    */
   async clickLogin(): Promise<void> {
-    await this.uiActions.click(this.loginButton);
+    await this.genericPageActions.click(this.loginButton, 'login button');
   }
 
   /**
    * Check remember me
    */
   async checkRememberMe(): Promise<void> {
-    await this.uiActions.check(this.rememberMeCheckbox);
+    await this.genericPageActions.check(this.rememberMeCheckbox, 'remember me checkbox');
   }
 
   /**
    * Click forgot password
    */
   async clickForgotPassword(): Promise<void> {
-    await this.uiActions.click(this.forgotPasswordLink);
+    await this.genericPageActions.click(this.forgotPasswordLink, 'forgot password link');
   }
 
   /**
    * Get error message
    */
   async getErrorMessage(): Promise<string> {
-    return await this.uiActions.getText(this.errorMessage);
+    return await this.genericPageActions.getText(this.errorMessage, 'error message');
   }
 
   /**
    * Is error message visible
    */
   async isErrorMessageVisible(): Promise<boolean> {
-    return await this.uiActions.isVisible(this.errorMessage);
+    return await this.genericPageActions.isVisible(this.errorMessage);
   }
 
   /**
    * Wait for error message
    */
   async waitForErrorMessage(): Promise<void> {
-    await this.uiActions.waitForVisible(this.errorMessage);
+    await this.genericPageActions.waitForVisible(this.errorMessage, 'error message');
   }
 
   /**

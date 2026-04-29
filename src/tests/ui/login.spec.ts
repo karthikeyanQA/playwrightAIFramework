@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { LoginPage } from '../../pages/login-page';
 import { DashboardPage } from '../../pages/dashboard-page';
 import { DataHelper } from '../../utils/helpers/data-helper';
-import logger from '../../utils/logger/logger';
+import { testReporter as reporter } from '../helpers/allure-reporter';
 
 /**
  * Login Tests
@@ -23,20 +23,18 @@ test.describe('Login Functionality', () => {
   });
 
   test.beforeEach(async ({ page }) => {
-    logger.testStart('Login Test');
+    reporter.testStart('Login Test');
     loginPage = new LoginPage(page);
     dashboardPage = new DashboardPage(page);
     await loginPage.navigate();
   });
 
-  test.afterEach(async ({ page }, testInfo) => {
-    logger.testEnd(testInfo.title, testInfo.status as 'passed' | 'failed' | 'skipped');
-    
+  test.afterEach(async ({ page: _page }, testInfo) => {
+    reporter.testEnd(testInfo.title, testInfo.status as 'passed' | 'failed' | 'skipped');
+
     // Capture screenshot on failure
     if (testInfo.status === 'failed') {
-      await page.screenshot({
-        path: `reports/screenshots/failed-${testInfo.title.replace(/\s/g, '-')}.png`,
-      });
+      await loginPage.screenshot(`failed-${testInfo.title.replace(/\s/g, '-')}`);
     }
   });
 
@@ -50,7 +48,7 @@ test.describe('Login Functionality', () => {
 
     // Assert
     expect(await dashboardPage.isUserLoggedIn()).toBeTruthy();
-    logger.step('Login successful - user is logged in');
+    reporter.step('Login successful - user is logged in');
   });
 
   test('@ui Should display error message with invalid credentials', async () => {
@@ -65,7 +63,7 @@ test.describe('Login Functionality', () => {
     expect(await loginPage.isErrorMessageVisible()).toBeTruthy();
     const errorMsg = await loginPage.getErrorMessage();
     expect(errorMsg).toContain('Invalid');
-    logger.step(`Error message displayed: ${errorMsg}`);
+    reporter.step(`Error message displayed: ${errorMsg}`);
   });
 
   test('@ui Should not login with empty credentials', async () => {
@@ -75,7 +73,7 @@ test.describe('Login Functionality', () => {
     // Assert
     const currentUrl = loginPage.getCurrentURL();
     expect(currentUrl).toContain('/login');
-    logger.step('Login prevented with empty credentials');
+    reporter.step('Login prevented with empty credentials');
   });
 
   test('@ui Should navigate to forgot password page', async () => {
@@ -85,7 +83,7 @@ test.describe('Login Functionality', () => {
     // Assert
     const currentUrl = loginPage.getCurrentURL();
     expect(currentUrl).toContain('forgot-password');
-    logger.step('Navigated to forgot password page');
+    reporter.step('Navigated to forgot password page');
   });
 
   test('@ui Should remember user when remember me is checked', async () => {
@@ -115,6 +113,6 @@ test.describe('Login Page UI Validation', () => {
     await loginPage.verifyLoaded();
     const title = await loginPage.getTitle();
     expect(title).toContain('Login');
-    logger.step('All login page elements are visible');
+    reporter.step('All login page elements are visible');
   });
 });

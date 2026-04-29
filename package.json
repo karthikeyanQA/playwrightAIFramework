@@ -20,6 +20,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
     "type-check": "tsc --noEmit",
+    "validate": "npm run lint && npm run type-check && npm run format:check",
+    "setup": "npm install && npx playwright install && npm run prepare",
     "prepare": "husky install",
     "pretest": "npm run lint && npm run type-check",
     "test:ci": "playwright test --reporter=html,json,junit",

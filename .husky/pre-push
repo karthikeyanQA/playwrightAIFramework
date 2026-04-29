@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+set -e
+
+echo "🚀 Running pre-push checks..."
+
+# Full lint check (no auto-fix — must be clean before pushing)
+echo "🧹 Running lint check..."
+npm run lint || { echo "❌ Lint errors found. Run 'npm run lint:fix' and fix remaining errors before pushing."; exit 1; }
+
+# TypeScript type check
+echo "🔧 Running TypeScript type check..."
+npm run type-check || { echo "❌ TypeScript errors found. Fix them before pushing."; exit 1; }
+
+# Run smoke tests
+echo "🧪 Running smoke tests..."
+npm run test:smoke || { echo "❌ Smoke tests failed. Fix failing tests before pushing."; exit 1; }
+
+echo "✅ All pre-push checks passed!"

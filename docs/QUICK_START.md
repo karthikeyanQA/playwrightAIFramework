@@ -46,7 +46,10 @@ npm test
 
 ```bash
 npm run report
+npm run report:allure
 ```
+
+Use `npm run report` for Playwright HTML and `npm run report:allure` for Allure dashboards.
 
 ## What's Next?
 
@@ -141,6 +144,8 @@ Test logs are saved in `logs/` directory:
 - `combined.log` - All logs
 - `error.log` - Errors only
 - `debug.log` - Debug logs
+
+UI/API test narration steps are written to Allure through `src/tests/helpers/allure-reporter.ts` and appear in `allure-results/`.
 
 ## Project Structure Overview
 

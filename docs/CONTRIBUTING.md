@@ -52,18 +52,33 @@ Enhancement suggestions are welcome! Please:
    - Add tests for new features
    - Update documentation
 
-4. **Test your changes**
+4. **Validate your changes before committing**
+
+   Run the full pre-flight check manually to catch all issues early:
    ```bash
-   npm run lint
-   npm run type-check
-   npm test
+   npm run validate
+   ```
+   This runs lint → type-check → format-check in one command.
+
+   Or run each step individually:
+   ```bash
+   npm run lint          # ESLint
+   npm run type-check    # TypeScript compiler
+   npm run format:check  # Prettier format check
    ```
 
 5. **Commit your changes**
+
    Follow conventional commit format:
    ```bash
    git commit -m "feat(scope): add amazing feature"
    ```
+
+   > **The commit will be blocked automatically if any check fails.** The `pre-commit` hook runs:
+   > - `lint-staged` — ESLint + Prettier on staged `.ts` files
+   > - `tsc --noEmit` — full TypeScript type check
+   >
+   > Fix all reported errors before the commit will be accepted.
 
    Commit types:
    - `feat`: New feature
@@ -81,6 +96,13 @@ Enhancement suggestions are welcome! Please:
    ```bash
    git push origin feature/your-feature-name
    ```
+
+   > **The push will be blocked automatically if any check fails.** The `pre-push` hook runs:
+   > - `npm run lint` — full ESLint check (no auto-fix)
+   > - `npm run type-check` — TypeScript compiler check
+   > - `npm run test:smoke` — smoke test suite must pass
+   >
+   > All three must pass before the push proceeds.
 
 7. **Create Pull Request**
    - Provide clear description
@@ -111,11 +133,25 @@ npm run test:smoke    # Run smoke tests
 
 ### Code Quality
 ```bash
+npm run validate      # Run all checks: lint + type-check + format:check
 npm run lint          # Lint code
-npm run lint:fix      # Fix linting issues
-npm run format        # Format code
-npm run type-check    # Type checking
+npm run lint:fix      # Auto-fix linting issues
+npm run format        # Format code with Prettier
+npm run format:check  # Check formatting without modifying
+npm run type-check    # TypeScript type checking
 ```
+
+### Git Hooks (Husky)
+
+The framework enforces quality gates automatically via Husky:
+
+| Hook | Trigger | Checks Run |
+|------|---------|------------|
+| `pre-commit` | `git commit` | lint-staged (ESLint + Prettier on staged files), TypeScript type check |
+| `pre-push` | `git push` | Full lint, TypeScript type check, smoke tests |
+| `commit-msg` | `git commit` | Validates conventional commit message format |
+
+If any check fails, the commit or push is **aborted** with a descriptive error message. Resolve the errors and try again.
 
 ## Code Style Guidelines
 

@@ -137,6 +137,24 @@ test.describe('User Management', () => {
 });
 ```
 
+### Framework Default Pattern (Recommended)
+
+This framework now routes UI/API test narration through `src/tests/helpers/allure-reporter.ts`:
+
+```typescript
+import { testReporter as reporter } from '../helpers/allure-reporter';
+
+test('@ui Example test', async ({ page }) => {
+  reporter.step('Navigate to page');
+  await page.goto('https://example.com');
+
+  reporter.step('Verify heading');
+  await expect(page.getByRole('heading')).toBeVisible();
+});
+```
+
+This keeps test code concise while still producing Allure steps for each important action.
+
 ### Available Annotations
 
 ```typescript
@@ -401,6 +419,9 @@ npm test
 
 # Generate and view Allure report
 npm run report:allure
+
+# Stop Allure local server
+# Press Ctrl+C in the terminal that started the report
 
 # Generate report only (don't open)
 npx allure generate allure-results --clean
