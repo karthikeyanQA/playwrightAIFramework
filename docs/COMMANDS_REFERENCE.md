@@ -94,7 +94,6 @@ Quality gates are enforced automatically on every commit and push:
 ```
 1. npm run lint        →  Full ESLint check (no auto-fix)
 2. npm run type-check  →  TypeScript compiler check
-3. npm run test:smoke  →  Smoke test suite
 ```
 - Push is **blocked** if any step fails.
 - Use `npm run lint:fix` to auto-fix lint issues, then re-push.
@@ -225,7 +224,7 @@ ENABLE_SCREENSHOTS=true ENABLE_VIDEO=true ENABLE_TRACING=true npm test
 # Commit (will trigger pre-commit hook)
 git commit -m "feat(login): add remember me feature"
 
-# Push (will trigger pre-push hook - runs smoke tests)
+# Push (will trigger pre-push hook - lint + type-check)
 git push origin main
 
 # Skip hooks (not recommended)

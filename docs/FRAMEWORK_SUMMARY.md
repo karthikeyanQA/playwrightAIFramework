@@ -75,7 +75,7 @@ A **production-ready, enterprise-grade test automation framework** with the foll
 
 #### Git Hooks (3)
 - ✅ `pre-commit` - Linting & type checking
-- ✅ `pre-push` - Run smoke tests
+- ✅ `pre-push` - Linting & type checking
 - ✅ `commit-msg` - Validate commit message format
 
 #### Documentation (5)

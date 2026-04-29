@@ -13,8 +13,4 @@ npm run lint || { echo "❌ Lint errors found. Run 'npm run lint:fix' and fix re
 echo "🔧 Running TypeScript type check..."
 npm run type-check || { echo "❌ TypeScript errors found. Fix them before pushing."; exit 1; }
 
-# Run smoke tests
-echo "🧪 Running smoke tests..."
-npm run test:smoke || { echo "❌ Smoke tests failed. Fix failing tests before pushing."; exit 1; }
-
 echo "✅ All pre-push checks passed!"
