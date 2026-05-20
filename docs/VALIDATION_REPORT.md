@@ -8,6 +8,36 @@ The enterprise-grade test automation framework has been successfully validated w
 
 ---
 
+## Latest Demo Validation Snapshot
+
+This document is the single place for validation status and sample run outcomes.
+
+### Demo run summary
+
+- API demo suite: 14/14 passed
+- UI demo suite: 5/7 passed
+- Known demo gaps: Todo delete selector instability and example.com structure expectation
+
+### Validation commands
+
+```bash
+# Run API demo tests
+npx playwright test src/tests/api/demo-api.spec.ts --project=chromium
+
+# Run UI demo tests
+npx playwright test src/tests/ui/demo-ui.spec.ts --project=chromium
+
+# Run all demo tests
+npx playwright test src/tests/*/demo-*.spec.ts --project=chromium
+
+# Run by tag
+npx playwright test --grep "@smoke"
+npx playwright test --grep "@api"
+npx playwright test --grep "@ui"
+```
+
+---
+
 ## Test Execution Results
 
 ### ✅ API Tests: 14/14 PASSED (100%)
@@ -89,7 +119,7 @@ The enterprise-grade test automation framework has been successfully validated w
 | `COMMANDS_REFERENCE.md` | 9.3KB | All commands |
 | `CONTRIBUTING.md` | 4.6KB | Contribution guide |
 | `FRAMEWORK_SUMMARY.md` | 10KB | Feature overview |
-| `TEST_RUN_SUMMARY.md` | 7.3KB | Validation details |
+| `VALIDATION_REPORT.md` | Combined validation status and test run details |
 
 ---
 

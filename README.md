@@ -151,10 +151,8 @@ playwright-enterprise-framework/
 │   ├── ALLURE_AND_AGENTIC_SUMMARY.md  # Allure + AI agent summary
 │   ├── AGENTIC_CAPABILITIES.md        # AI agent capabilities
 │   ├── MCP_INTEGRATION.md             # MCP integration guide
-│   ├── MCP_SETUP_GUIDE.md             # MCP setup instructions
-│   ├── MCP_CONFIGURATION_SUMMARY.md   # MCP config summary
 │   ├── FRAMEWORK_SUMMARY.md           # Framework overview
-│   ├── TEST_RUN_SUMMARY.md            # Test run results summary
+│   ├── README.md                      # Documentation hub
 │   └── VALIDATION_REPORT.md           # Validation report
 ├── logs/                              # Log files
 ├── reports/                           # Test reports
@@ -456,7 +454,7 @@ Once the MCP server is enabled in VS Code, you can ask GitHub Copilot things lik
 "Take a screenshot of the dashboard page"
 ```
 
-For more details see [docs/MCP_INTEGRATION.md](docs/MCP_INTEGRATION.md) and [docs/MCP_SETUP_GUIDE.md](docs/MCP_SETUP_GUIDE.md).
+For more details see [docs/MCP_INTEGRATION.md](docs/MCP_INTEGRATION.md).
 
 ## �🔄 CI/CD Integration
 
@@ -597,6 +595,7 @@ All detailed documentation is available in the [`docs/`](docs/) folder:
 
 | Document | Description |
 |----------|-------------|
+| [README.md](docs/README.md) | Documentation hub and grouped navigation |
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Framework architecture and design decisions |
 | [QUICK_START.md](docs/QUICK_START.md) | Get up and running quickly |
 | [COMMANDS_REFERENCE.md](docs/COMMANDS_REFERENCE.md) | Full reference of all npm scripts and commands |
@@ -605,10 +604,7 @@ All detailed documentation is available in the [`docs/`](docs/) folder:
 | [ALLURE_AND_AGENTIC_SUMMARY.md](docs/ALLURE_AND_AGENTIC_SUMMARY.md) | Allure + AI agent integration summary |
 | [AGENTIC_CAPABILITIES.md](docs/AGENTIC_CAPABILITIES.md) | AI agent capabilities and usage |
 | [MCP_INTEGRATION.md](docs/MCP_INTEGRATION.md) | MCP integration guide |
-| [MCP_SETUP_GUIDE.md](docs/MCP_SETUP_GUIDE.md) | MCP setup instructions |
-| [MCP_CONFIGURATION_SUMMARY.md](docs/MCP_CONFIGURATION_SUMMARY.md) | MCP configuration summary |
 | [FRAMEWORK_SUMMARY.md](docs/FRAMEWORK_SUMMARY.md) | High-level framework overview |
-| [TEST_RUN_SUMMARY.md](docs/TEST_RUN_SUMMARY.md) | Latest test run results |
 | [VALIDATION_REPORT.md](docs/VALIDATION_REPORT.md) | Framework validation report |
 
 ## 📝 License

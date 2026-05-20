@@ -2,27 +2,92 @@
 
 ## Description
 Generate a new API test file following framework conventions and best practices.
+Supports API input from structured parameters, cURL commands, or trace artifacts.
 
 ## Usage
 Invoke this skill to create API tests for RESTful endpoints with proper structure, assertions, and error handling.
+You can provide API input in one of three ways:
+- Direct parameters (`endpoint`, `methods`, `auth`, `test-type`)
+- A raw cURL command
+- Trace-derived request data (Playwright/network/API traces)
 
 ## Parameters
-- **endpoint** (required): API endpoint to test (e.g., /api/users, /api/products)
-- **methods** (required): HTTP methods to test (GET, POST, PUT, DELETE)
+- **input-source** (optional): `params` | `curl` | `trace` (default: `params`)
+- **endpoint** (required when `input-source=params`): API endpoint to test (e.g., /api/users, /api/products)
+- **methods** (required when `input-source=params`): HTTP methods to test (GET, POST, PUT, DELETE)
 - **auth** (optional): Authentication type (bearer, basic, none)
 - **test-type** (optional): Test category (smoke, regression, integration)
+- **curl-command** (required when `input-source=curl`): Full cURL command string
+- **trace-path** (required when `input-source=trace`): Path to trace file/folder to parse request details from
+- **operation-filter** (optional): Request matcher for traces (method/path/operationId)
+- **base-url** (optional): Override base URL inferred from cURL/trace
+- **headers-allowlist** (optional): Headers to include in generated test input
+- **headers-denylist** (optional): Sensitive headers to exclude (for example Authorization, Cookie)
+
+## Input Sources
+
+### 1) Params Input
+Use explicit parameters for endpoint and methods.
+
+### 2) cURL Input
+When `input-source=curl`, the skill should parse and extract:
+- HTTP method
+- URL path and query params
+- Headers
+- Body payload
+- Auth hints (Bearer/Basic/API key)
+
+Then generate positive and negative tests for the extracted operation.
+
+Example:
+
+```json
+{
+  "input-source": "curl",
+  "curl-command": "curl -X POST 'https://api.example.com/v1/users' -H 'Authorization: Bearer <token>' -H 'Content-Type: application/json' -d '{\"name\":\"John\"}'",
+  "test-type": "regression"
+}
+```
+
+### 3) Trace Input
+When `input-source=trace`, the skill should parse request entries from provided traces and derive:
+- Method, path, query
+- Request/response payload shapes
+- Status code expectations
+- Reusable auth/header patterns
+
+Prefer most recent successful request/response pairs and generate tests from stable operations.
+
+Example:
+
+```json
+{
+  "input-source": "trace",
+  "trace-path": "test-results/traces/checkout-trace.zip",
+  "operation-filter": "POST /api/orders",
+  "test-type": "smoke"
+}
+```
 
 ## What This Skill Does
 
 1. Analyzes existing API tests to understand patterns
-2. Creates new test file in `src/tests/api/`
-3. Generates test cases for specified HTTP methods
-4. Adds proper assertions (status, schema, data)
-5. Includes error handling test cases
-6. Adds performance assertions
-7. Follows framework conventions
-8. Adds proper tags (@api, @smoke, @regression)
-9. Includes JSDoc comments
+2. Resolves API input from params, cURL, or trace
+3. Creates new test file in `src/tests/api/`
+4. Generates test cases for resolved HTTP methods/operations
+5. Adds proper assertions (status, schema, data)
+6. Includes error handling test cases
+7. Adds performance assertions
+8. Follows framework conventions
+9. Adds proper tags (@api, @smoke, @regression)
+10. Includes JSDoc comments
+
+## Trace and cURL Safety Rules
+
+- Never persist secrets from cURL/trace inputs (tokens, cookies, API keys)
+- Replace sensitive values with environment variable references
+- Use `process.env` for auth and secret headers
+- Keep generated sample payloads sanitized and deterministic
 
 ## Test Structure Generated
 

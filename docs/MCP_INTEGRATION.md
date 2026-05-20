@@ -49,6 +49,14 @@ The `.vscode/mcp.json` is already configured:
 
 In VS Code, open the MCP panel (or the Copilot chat) and click **Start** next to the `playwright` server. No extra installation is needed — `npx` fetches `@playwright/mcp@latest` automatically.
 
+### Quick Setup Checklist
+
+- [x] `.vscode/mcp.json` is committed to the repo
+- [x] `@playwright/mcp` is launched via `npx`
+- [x] `npm run setup` installs local dependencies and Playwright browsers
+- [ ] Start the `playwright` MCP server from VS Code
+- [ ] Verify the server by asking Copilot to navigate and capture a screenshot
+
 ---
 
 ## 🎯 How to Use MCP with GitHub Copilot
@@ -193,6 +201,60 @@ Copilot (via MCP):
 - [x] No extra dependencies required
 - [x] Works after `npm run setup`
 - [ ] Enable the server in VS Code MCP panel
+
+---
+
+## ✅ Verification
+
+### Check if MCP is working
+
+1. Open VS Code with GitHub Copilot
+2. Switch Copilot Chat to agent mode
+3. Ask: `Navigate to https://playwright.dev and take a screenshot`
+
+If the MCP server is running, Copilot will launch the browser and return a screenshot.
+
+### Verify local prerequisites
+
+```bash
+node --version
+npx @playwright/mcp@latest --version
+```
+
+Node.js 18+ is required.
+
+---
+
+## 🛠️ Troubleshooting
+
+### MCP server does not start
+
+1. Verify Node.js 18+ is installed
+2. Run `npx @playwright/mcp@latest` manually to confirm the package resolves
+3. Reload the VS Code window and start the server again
+
+### Browser does not open visually
+
+The server runs headless by default. To run headed, update `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--headed"]
+    }
+  }
+}
+```
+
+### Package resolution fails
+
+Check internet and npm access with:
+
+```bash
+npx @playwright/mcp@latest --version
+```
 
 ---
 
