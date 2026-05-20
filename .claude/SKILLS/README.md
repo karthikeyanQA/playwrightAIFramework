@@ -16,6 +16,9 @@ This directory contains reusable skills that can be invoked by Claude Code, Clau
 - **[generate-ui-test](./generate-ui-test.md)** - Generate UI tests with Page Object Model
 - **[create-page-object](./create-page-object.md)** - Create reusable Page Object classes
 
+### Migration
+- **[migrate-from-serenity](./migrate-from-serenity.md)** - Full agentic migration from Serenity BDD / Serenity-JS to this Playwright framework
+
 ## 🚀 How to Use Skills
 
 ### With Claude Code (VS Code Extension)
@@ -88,6 +91,13 @@ Create new tests and page objects.
 | generate-api-test | Create API tests | New API endpoints |
 | generate-ui-test | Create UI tests | New pages/features |
 | create-page-object | Create page objects | New pages/components |
+
+### 4. Migration Skills
+Migrate existing test projects into this framework.
+
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
+| migrate-from-serenity | Migrate Serenity BDD / Serenity-JS project | Consolidating legacy Serenity suites |
 
 ## 💡 Example Workflows
 

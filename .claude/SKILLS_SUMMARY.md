@@ -384,10 +384,10 @@ npx playwright test --grep @smoke
 
 ## 📊 Quick Stats
 
-- **Total Skills**: 6
-- **Total Documentation**: ~50 KB
-- **Total Lines**: 1,900+
-- **Categories**: 3 (Execution, Analysis, Generation)
+- **Total Skills**: 7
+- **Total Documentation**: ~80 KB
+- **Total Lines**: 2,700+
+- **Categories**: 4 (Execution, Analysis, Generation, Migration)
 - **Example Commands**: 50+
 - **Use Cases**: 30+
 
