@@ -1,10 +1,10 @@
 # Analyze Test Failures
 
 ## Description
-Deep analysis of failed tests with error patterns, root causes, and fix suggestions.
+Deep analysis of failed tests with error patterns, root causes, fix suggestions, and automated verification by re-running the affected tests.
 
 ## Usage
-Invoke this skill after test execution to understand why tests failed and how to fix them.
+Invoke this skill after test execution to understand why tests failed, how to fix them, and to verify the findings by re-running the failed tests.
 
 ## Parameters
 - **test-name** (optional): Analyze specific test by name
@@ -20,6 +20,8 @@ Invoke this skill after test execution to understand why tests failed and how to
 5. Categorizes failures (assertion, timeout, network, etc.)
 6. Provides actionable fix suggestions
 7. Checks logs for additional context
+8. **Re-runs the failed tests** to verify current state and confirm whether failures are consistent or flaky
+9. **Reports verification results** — pass/fail status post-analysis, with comparison against original run
 
 ## Expected Outcome
 
@@ -29,6 +31,7 @@ Invoke this skill after test execution to understand why tests failed and how to
 - **Stack Traces**: Full error details
 - **Fix Suggestions**: Concrete steps to resolve issues
 - **Related Files**: Which test files and page objects need attention
+- **Verification Report**: Re-run results showing which failures are confirmed, resolved, or flaky
 
 ## Analysis Categories
 
@@ -105,6 +108,22 @@ Invoke this skill after test execution to understand why tests failed and how to
 2. Update selectors in registration page object
 3. Add more robust error handling
 4. Consider adding retry logic for flaky tests
+
+---
+
+### ✅ Verification Run
+
+After analysis, the failed tests were re-executed to confirm failure consistency.
+
+| Test | Original Status | Verification Status | Verdict |
+|------|----------------|---------------------|---------|
+| Login Test - Invalid Credentials | ❌ Failed | ❌ Failed | Confirmed Failure |
+| User Registration - Form Validation | ❌ Failed | ✅ Passed | Flaky Test |
+| Get All Users API | ❌ Failed | ❌ Failed | Confirmed Failure |
+
+- **Confirmed Failures**: 2 (require code/config fix)
+- **Flaky Tests**: 1 (consider retry mechanism or wait improvements)
+- **Auto-resolved**: 0
 ```
 
 ## Example Commands
@@ -134,6 +153,9 @@ node analyze-failures.js --tag @api
    - Why it failed
    - How to fix it
 6. Suggests code changes if needed
+7. **Re-runs all failed tests** using `mcp__playwright-framework__run_tests`
+8. **Compares results** against original run — classifies as Confirmed Failure, Flaky, or Auto-resolved
+9. **Outputs Verification Report** with verdict table
 
 ## Success Criteria
 
@@ -142,11 +164,13 @@ node analyze-failures.js --tag @api
 - ✅ Fix suggestions provided
 - ✅ Related files identified
 - ✅ Actionable next steps clear
+- ✅ Failed tests re-executed for verification
+- ✅ Verification report generated with pass/fail comparison
 
 ## Integration
 
 This skill works with:
-- **MCP Tool**: `analyze_failures`
+- **MCP Tool**: `analyze_failures`, `run_tests`
 - **Test Results**: `test-results/results.json`
 - **Logs**: `logs/error.log`, `logs/combined.log`
 - **Screenshots**: `screenshots/` (on failure)
@@ -164,3 +188,4 @@ This skill works with:
 - Check screenshots/videos for visual context
 - Some failures may require environment fixes (not code)
 - Flaky tests may need retry mechanism or better waits
+- Verification re-run uses the same tag/file filter as the original analysis scope

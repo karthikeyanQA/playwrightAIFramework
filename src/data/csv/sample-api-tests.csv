@@ -1,0 +1,9 @@
+TestCaseID,TestName,Endpoint,Method,RequestBody,Headers,ExpectedStatus,ExpectedResponse,TestType,Tags
+TC001,Get All Users,/api/users,GET,,,200,Array of user objects,smoke,@smoke @api
+TC002,Create New User,/api/users,POST,"{""name"":""Test User"",""email"":""test@example.com"",""role"":""user""}",Content-Type:application/json,201,Created user with id and timestamps,regression,@regression @api
+TC003,Get User By ID,/api/users/1,GET,,,200,Single user object with id=1,smoke,@smoke @api
+TC004,Update User,/api/users/1,PUT,"{""name"":""Updated Name""}",Content-Type:application/json,200,User object with updated name,regression,@regression @api
+TC005,Delete User,/api/users/1,DELETE,,,204,Empty response body,regression,@regression @api
+TC006,Non-existent User,/api/users/99999,GET,,,404,Resource not found error message,regression,@regression @api
+TC007,Create User Missing Email,/api/users,POST,"{""name"":""No Email""}",Content-Type:application/json,400,Validation error mentioning email field,regression,@regression @api
+TC008,Unauthorized Request,/api/users,GET,,,401,Unauthorized error message,regression,@regression @api

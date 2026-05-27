@@ -1,0 +1,7 @@
+TestCaseID,TestName,PageName,URL,Steps,ExpectedResult,TestType,Tags,Description
+TC001,Valid Login,Login,/login,Enter valid username;Enter valid password;Click login button,User redirected to dashboard,smoke,@smoke @ui,Happy path login
+TC002,Invalid Credentials,Login,/login,Enter invalid username;Enter wrong password;Click login button,Error message is displayed,regression,@regression @ui,Negative login case
+TC003,Empty Fields Validation,Login,/login,Click login button without entering credentials,Validation errors shown below fields,regression,@regression @ui,Boundary condition
+TC004,Forgot Password Navigation,Login,/login,Click forgot password link,User navigated to forgot-password page,regression,@regression @ui,Navigation check
+TC005,Dashboard Loads Successfully,Dashboard,/dashboard,Navigate to dashboard;Wait for widgets to load,All dashboard widgets are visible,smoke,@smoke @ui,Page load check
+TC006,User Profile Update,Profile,/profile,Navigate to profile page;Update display name;Click save button,Success message shown and name updated,regression,@regression @ui,Profile edit flow

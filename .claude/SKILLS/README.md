@@ -15,6 +15,7 @@ This directory contains reusable skills that can be invoked by Claude Code, Clau
 - **[generate-api-test](./generate-api-test.md)** - Generate API tests following framework conventions
 - **[generate-ui-test](./generate-ui-test.md)** - Generate UI tests with Page Object Model
 - **[create-page-object](./create-page-object.md)** - Create reusable Page Object classes
+- **[generate-tests-from-file](./generate-tests-from-file.md)** - Generate UI or API tests by reading test cases from a CSV or Excel (.xlsx) file
 
 ### Migration
 - **[migrate-from-serenity](./migrate-from-serenity.md)** - Full agentic migration from Serenity BDD / Serenity-JS to this Playwright framework
@@ -91,6 +92,7 @@ Create new tests and page objects.
 | generate-api-test | Create API tests | New API endpoints |
 | generate-ui-test | Create UI tests | New pages/features |
 | create-page-object | Create page objects | New pages/components |
+| generate-tests-from-file | Create UI or API tests from CSV/Excel | Bulk test creation from existing test case docs |
 
 ### 4. Migration Skills
 Migrate existing test projects into this framework.
@@ -247,6 +249,7 @@ When you invoke a skill, Claude may use one or more MCP tools to accomplish the 
 | generate-ui-test | ✅ Active | 2024-01-15 |
 | create-page-object | ✅ Active | 2024-01-15 |
 | debug-test | ✅ Active | 2024-01-15 |
+| generate-tests-from-file | ✅ Active | 2026-05-27 |
 
 ## 🆘 Troubleshooting
 

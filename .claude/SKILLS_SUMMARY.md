@@ -94,6 +94,29 @@ Debug specific failing test with detailed analysis.
 
 ### 3. Test Generation Skills
 
+#### **generate-tests-from-file** _(new)_
+Generate UI or API Playwright tests by reading test cases from a CSV or Excel (.xlsx) file.
+
+**Example Usage:**
+```
+"Generate tests from src/data/csv/login-tests.csv"
+"Create Playwright tests from my Excel file at /Users/me/regression/api-tests.xlsx"
+"Read test cases from test-data/all-tests.xlsx sheet Regression and generate tests"
+```
+
+**What It Does:**
+- Reads CSV (using existing `csv-parse`) or Excel (auto-installs `xlsx` if needed)
+- Auto-detects UI vs API mode from column names
+- Groups rows by `PageName` or `Endpoint` to produce one spec file per group
+- Generates page objects for UI tests if they don't already exist
+- Outputs ready-to-run `.spec.ts` files following all framework conventions
+
+**Sample templates** (auto-created on first use):
+- `src/data/csv/sample-ui-tests.csv`
+- `src/data/csv/sample-api-tests.csv`
+
+---
+
 #### **generate-api-test**
 Generate new API test files with CRUD operations and error handling.
 
