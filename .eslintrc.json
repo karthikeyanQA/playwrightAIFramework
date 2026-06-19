@@ -43,6 +43,7 @@
     "playwright-report/",
     "test-results/",
     "allure-results/",
-    "*.config.js"
+    "*.config.js",
+    "playwright.config.ts"
   ]
 }

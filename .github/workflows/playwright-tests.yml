@@ -20,21 +20,45 @@ on:
           - api
 
 jobs:
+  # ─── Quality Gate ────────────────────────────────────────────────────────────
+  quality-gate:
+    name: Quality Gate (Lint + Type Check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run type checking
+        run: npm run type-check
+
+      - name: Run format check
+        run: npm run format:check
+
+  # ─── Test Execution ──────────────────────────────────────────────────────────
   test:
-    name: Run Playwright Tests
+    name: Run Playwright Tests (Shard ${{ matrix.shard }}/4)
+    needs: quality-gate
     timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         shard: [1, 2, 3, 4]
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
@@ -46,48 +70,73 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Create reports directory
-        run: mkdir -p reports/screenshots
-
-      - name: Run linting
-        run: npm run lint
-
-      - name: Run type checking
-        run: npm run type-check
+        run: mkdir -p reports/screenshots playwright/.auth
 
       - name: Run tests (all)
-        if: github.event.inputs.test_suite == 'all' || github.event.inputs.test_suite == ''
+        if: ${{ github.event.inputs.test_suite == 'all' || github.event.inputs.test_suite == '' }}
         run: npx playwright test --shard=${{ matrix.shard }}/4
         env:
           ENV: qa
           CI: true
+          SKIP_FLAKY: true
+          XRAY_ENABLED: ${{ vars.XRAY_ENABLED || 'false' }}
+          JIRA_PROJECT_KEY: ${{ vars.JIRA_PROJECT_KEY }}
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          USER_USERNAME: ${{ secrets.USER_USERNAME }}
+          USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+          BASE_URL: ${{ vars.BASE_URL || 'http://localhost:3000' }}
+          API_BASE_URL: ${{ vars.API_BASE_URL || 'http://localhost:3000/api' }}
 
       - name: Run smoke tests
-        if: github.event.inputs.test_suite == 'smoke'
-        run: npm run test:smoke
+        if: ${{ github.event.inputs.test_suite == 'smoke' }}
+        run: npm run test:smoke -- --shard=${{ matrix.shard }}/4
         env:
           ENV: qa
           CI: true
+          SKIP_FLAKY: true
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          BASE_URL: ${{ vars.BASE_URL || 'http://localhost:3000' }}
+          API_BASE_URL: ${{ vars.API_BASE_URL || 'http://localhost:3000/api' }}
 
       - name: Run regression tests
-        if: github.event.inputs.test_suite == 'regression'
-        run: npm run test:regression
+        if: ${{ github.event.inputs.test_suite == 'regression' }}
+        run: npm run test:regression -- --shard=${{ matrix.shard }}/4
         env:
           ENV: qa
           CI: true
+          SKIP_FLAKY: true
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          BASE_URL: ${{ vars.BASE_URL || 'http://localhost:3000' }}
+          API_BASE_URL: ${{ vars.API_BASE_URL || 'http://localhost:3000/api' }}
 
       - name: Run UI tests
-        if: github.event.inputs.test_suite == 'ui'
-        run: npm run test:ui
+        if: ${{ github.event.inputs.test_suite == 'ui' }}
+        run: npm run test:ui -- --shard=${{ matrix.shard }}/4
         env:
           ENV: qa
           CI: true
+          SKIP_FLAKY: true
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          BASE_URL: ${{ vars.BASE_URL || 'http://localhost:3000' }}
+          API_BASE_URL: ${{ vars.API_BASE_URL || 'http://localhost:3000/api' }}
 
       - name: Run API tests
-        if: github.event.inputs.test_suite == 'api'
-        run: npm run test:api
+        if: ${{ github.event.inputs.test_suite == 'api' }}
+        run: npm run test:api -- --shard=${{ matrix.shard }}/4
         env:
           ENV: qa
           CI: true
+          SKIP_FLAKY: true
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          BASE_URL: ${{ vars.BASE_URL || 'http://localhost:3000' }}
+          API_BASE_URL: ${{ vars.API_BASE_URL || 'http://localhost:3000/api' }}
 
       - name: Upload test results
         if: always()
@@ -105,7 +154,7 @@ jobs:
           path: test-results/
           retention-days: 30
 
-      - name: Upload screenshots
+      - name: Upload screenshots on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
@@ -113,31 +162,42 @@ jobs:
           path: reports/screenshots/
           retention-days: 30
 
+  # ─── Merge Reports ───────────────────────────────────────────────────────────
   merge-reports:
     name: Merge Test Reports
     if: always()
     needs: test
     runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Download all reports
+      - name: Download all shard reports
         uses: actions/download-artifact@v4
         with:
           path: all-reports
           pattern: playwright-report-*
 
-      - name: Merge reports
-        run: |
-          npx playwright merge-reports --reporter html all-reports
+      - name: Download all JUnit results
+        uses: actions/download-artifact@v4
+        with:
+          path: all-results
+          pattern: test-results-*
+
+      - name: Merge Playwright HTML reports
+        run: npx playwright merge-reports --reporter html all-reports
         continue-on-error: true
+
+      - name: Merge JUnit XML files
+        run: |
+          npm install -g junit-merge
+          mkdir -p test-results
+          find all-results -name "junit.xml" | xargs junit-merge -o test-results/junit-merged.xml || \
+            cp all-results/test-results-1/junit.xml test-results/junit-merged.xml 2>/dev/null || true
 
       - name: Upload merged report
         if: always()
@@ -145,6 +205,14 @@ jobs:
         with:
           name: playwright-report-merged
           path: playwright-report/
+          retention-days: 30
+
+      - name: Upload merged JUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-merged
+          path: test-results/junit-merged.xml
           retention-days: 30
 
       - name: Deploy report to GitHub Pages
@@ -155,17 +223,102 @@ jobs:
           publish_dir: ./playwright-report
           destination_dir: reports/${{ github.run_number }}
 
+  # ─── Xray / JIRA Upload ──────────────────────────────────────────────────────
+  xray-upload:
+    name: Upload Results to Xray / JIRA
+    if: always() && vars.XRAY_ENABLED == 'true'
+    needs: merge-reports
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download merged JUnit results
+        uses: actions/download-artifact@v4
+        with:
+          name: junit-merged
+          path: test-results/
+
+      # ── Xray Cloud (OAuth2) ──────────────────────────────────────────────
+      - name: Authenticate with Xray Cloud
+        if: ${{ vars.XRAY_CLOUD == 'true' }}
+        id: xray-auth
+        run: |
+          TOKEN=$(curl -s -H "Content-Type: application/json" \
+            -X POST \
+            --data "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" \
+            https://xray.cloud.getxray.app/api/v2/authenticate | tr -d '"')
+          echo "::add-mask::$TOKEN"
+          echo "xray_token=$TOKEN" >> "$GITHUB_OUTPUT"
+        env:
+          XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+          XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+
+      - name: Upload JUnit to Xray Cloud
+        if: ${{ vars.XRAY_CLOUD == 'true' }}
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            -H "Content-Type: text/xml" \
+            -H "Authorization: Bearer ${{ steps.xray-auth.outputs.xray_token }}" \
+            -X POST \
+            "https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$JIRA_PROJECT_KEY" \
+            --data-binary @test-results/junit-merged.xml
+        env:
+          JIRA_PROJECT_KEY: ${{ vars.JIRA_PROJECT_KEY }}
+
+      # ── Xray Server / Data Center (PAT) ──────────────────────────────────
+      - name: Upload JUnit to Xray Server/DC
+        if: ${{ vars.XRAY_CLOUD != 'true' }}
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            -H "Content-Type: text/xml" \
+            -H "Authorization: Bearer $XRAY_TOKEN" \
+            -X POST \
+            "$JIRA_BASE_URL/rest/raven/1.0/import/execution/junit?projectKey=$JIRA_PROJECT_KEY" \
+            --data-binary @test-results/junit-merged.xml
+        env:
+          XRAY_TOKEN: ${{ secrets.XRAY_TOKEN }}
+          JIRA_BASE_URL: ${{ vars.JIRA_BASE_URL }}
+          JIRA_PROJECT_KEY: ${{ vars.JIRA_PROJECT_KEY }}
+
+  # ─── Pass/Fail Gate ──────────────────────────────────────────────────────────
+  results-gate:
+    name: Test Results Gate
+    if: always()
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all JUnit results
+        uses: actions/download-artifact@v4
+        with:
+          path: all-results
+          pattern: test-results-*
+
+      - name: Evaluate pass rate
+        run: |
+          FAILURES=$(grep -rh 'failures=' all-results --include="junit.xml" | \
+            grep -oP 'failures="\K[0-9]+' | awk '{s+=$1} END {print s+0}')
+          ERRORS=$(grep -rh 'errors=' all-results --include="junit.xml" | \
+            grep -oP 'errors="\K[0-9]+' | awk '{s+=$1} END {print s+0}')
+          TOTAL=$((FAILURES + ERRORS))
+          echo "Total failures: $TOTAL (failures=$FAILURES, errors=$ERRORS)"
+          if [ "$TOTAL" -gt "0" ]; then
+            echo "::error::$TOTAL test(s) failed — blocking merge."
+            exit 1
+          fi
+          echo "All tests passed — quality gate cleared."
+
+  # ─── Notifications ───────────────────────────────────────────────────────────
   notify:
     name: Send Notifications
     if: always()
-    needs: [test, merge-reports]
+    needs: [test, merge-reports, results-gate]
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Notify on success
-        if: needs.test.result == 'success'
-        run: echo "All tests passed successfully!"
+        if: needs.results-gate.result == 'success'
+        run: echo "All tests passed. Report available at GitHub Pages."
 
       - name: Notify on failure
-        if: needs.test.result == 'failure'
-        run: echo "Tests failed! Check the artifacts for details."
+        if: needs.results-gate.result == 'failure'
+        run: echo "Tests failed. Check artifacts and report for details."

@@ -12,6 +12,8 @@ build/
 # Test artifacts
 playwright-report/
 test-results/
+# Auth storage state — contains session tokens, never commit
+playwright/.auth/
 allure-results/
 allure-report/
 screenshots/
