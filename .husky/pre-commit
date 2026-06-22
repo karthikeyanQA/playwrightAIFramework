@@ -13,4 +13,8 @@ npx lint-staged || { echo "❌ Lint/format check failed. Fix the errors above be
 echo "🔧 Running TypeScript type check..."
 npm run type-check || { echo "❌ TypeScript errors found. Fix them before committing."; exit 1; }
 
+# Run AI PR review on staged changes
+echo "🤖 Running AI PR review..."
+node "$(git rev-parse --show-toplevel)/scripts/ai-pr-review.js" || exit 1
+
 echo "✅ All pre-commit checks passed!"
