@@ -17,6 +17,9 @@ This directory contains reusable skills that can be invoked by Claude Code, Clau
 - **[create-page-object](./create-page-object.md)** - Create reusable Page Object classes
 - **[generate-tests-from-file](./generate-tests-from-file.md)** - Generate UI or API tests by reading test cases from a CSV or Excel (.xlsx) file
 
+### Quality & Standards
+- **[best-practices](./best-practices.md)** - Audit tests for best practice violations and get guidance on correct Playwright patterns
+
 ### Migration
 - **[migrate-from-serenity](./migrate-from-serenity.md)** - Full agentic migration from Serenity BDD / Serenity-JS to this Playwright framework
 
@@ -94,7 +97,14 @@ Create new tests and page objects.
 | create-page-object | Create page objects | New pages/components |
 | generate-tests-from-file | Create UI or API tests from CSV/Excel | Bulk test creation from existing test case docs |
 
-### 4. Migration Skills
+### 4. Quality & Standards Skills
+Enforce coding standards and best practices.
+
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
+| best-practices | Audit and guide Playwright best practices | Before commits, PR reviews, onboarding new team members |
+
+### 5. Migration Skills
 Migrate existing test projects into this framework.
 
 | Skill | Purpose | When to Use |
@@ -250,6 +260,7 @@ When you invoke a skill, Claude may use one or more MCP tools to accomplish the 
 | create-page-object | ✅ Active | 2024-01-15 |
 | debug-test | ✅ Active | 2024-01-15 |
 | generate-tests-from-file | ✅ Active | 2026-05-27 |
+| best-practices | ✅ Active | 2026-06-25 |
 
 ## 🆘 Troubleshooting
 
